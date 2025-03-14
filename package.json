@@ -1,0 +1,132 @@
+{
+	"name": "webvm",
+	"displayName": "WebVM",
+	"description": "WebVM is a virtual Linux environment running in the browser via WebAssembly",
+	"version": "0.0.18",
+	"publisher": "zongou",
+	"private": true,
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/zongou/vscode-webvm"
+	},
+	"engines": {
+		"vscode": "^1.74.0"
+	},
+	"extensionKind": [
+		"ui",
+		"workspace"
+	],
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [],
+	"icon": "media/webvm_hero.png",
+	"browser": "./out/extension.js",
+	"main": "./out/extension.js",
+	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "webvm",
+					"title": "WebVM",
+					"icon": "media/webvm_hero.png"
+				}
+			]
+		},
+		"views": {
+			"webvm": [
+				{
+					"icon": "media/webvm_hero.png",
+					"type": "webview",
+					"id": "webvm.monitor",
+					"name": "WebVM"
+				}
+			]
+		},
+		"menus": {
+			"view/title": [
+				{
+					"command": "webvm.createTerminal",
+					"when": "view == webvm.monitor",
+					"group": "navigation"
+				},
+				{
+					"command": "webvm.resetDevice",
+					"when": "view == webvm.monitor",
+					"group": "navigation"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "webvm.createTerminal",
+				"category": "WebVM",
+				"title": "New Terminal",
+				"icon": "$(diff-added)"
+			},
+			{
+				"command": "webvm.resetDevice",
+				"category": "WebVM",
+				"title": "Reset Device",
+				"icon": "$(clear-all)"
+			}
+		],
+		"terminal": {
+			"profiles": [
+				{
+					"title": "WebVM Terminal",
+					"id": "webvm.terminal"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "terminal",
+				"contents": "[Open WebVM Terminal](command:webvm.createTerminal)"
+			}
+		],
+		"configuration": {
+			"title": "WebVM",
+			"properties": {
+				"webvm.image": {
+					"order": 0,
+					"type": "object",
+					"patternProperties": {
+						"type": {
+							"type": "string",
+							"enum": [
+								"cloud",
+								"bytes",
+								"github"
+							]
+						},
+						"url": {
+							"type": "string"
+						}
+					},
+					"default": {
+						"type": "cloud",
+						"url": "wss://disks.webvm.io/debian_large_20230522_5044875331.ext2"
+					},
+					"description": "image"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"lint": "eslint",
+		"watch": "tsc -w -p ./"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.13.0",
+		"@stylistic/eslint-plugin": "^2.9.0",
+		"@types/vscode": "^1.73.0",
+		"@types/vscode-webview": "^1.57.5",
+		"eslint": "^9.13.0",
+		"typescript": "^5.8.2",
+		"typescript-eslint": "^8.26.0"
+	}
+}
